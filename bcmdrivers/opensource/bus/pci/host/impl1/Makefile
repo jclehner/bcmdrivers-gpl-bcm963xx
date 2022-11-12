@@ -11,7 +11,7 @@ BRCM_BOARD = bcm963xx
 ROOT = $(abspath $(M)/../../../../../..)
 ###################################################################
 
-ccflags-y += -DCONFIG_BCM94908=y
+ccflags-y += -DCONFIG_BCM94908=y -DCONFIG_BCM_KF_ARM_BCM963XX=y
 ccflags-y += -I$(M) -I$(M)/common
 ccflags-y += -I$(ROOT)/bcmdrivers/opensource/include/bcm963xx
 ccflags-y += -I$(ROOT)/bcmdrivers/broadcom/include/bcm963xx
