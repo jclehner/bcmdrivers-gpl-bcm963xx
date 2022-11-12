@@ -14,6 +14,7 @@ ROOT = $(abspath $(M)/../../../../../..)
 ccflags-y += -DCONFIG_BCM94908=y
 ccflags-y += -I$(M) -I$(M)/common
 ccflags-y += -I$(ROOT)/bcmdrivers/opensource/include/bcm963xx
+ccflags-y += -I$(ROOT)/bcmdrivers/broadcom/include/bcm963xx
 ccflags-y += -I$(ROOT)/shared/opensource/include/bcm963xx
 ccflags-y += -I$(ROOT)/shared/opensource/include/pmc
 
