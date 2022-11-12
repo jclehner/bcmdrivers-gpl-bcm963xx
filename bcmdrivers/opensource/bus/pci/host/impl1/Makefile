@@ -19,10 +19,11 @@ INC_BRCMBOARDPARMS_PATH = $(INC_BRCMDRIVER_PUB_PATH)/boardparams
 PCIE_HCD_PATH=$(BRCMDRIVERS_DIR)/opensource/bus/pci/host/impl1
 ###################################################################
 
-ccflags-y += -I$(PCIE_HCD_PATH)/common
-ccflags-y += -I. -I$(INC_BRCMDRIVER_PUB_PATH)/$(BRCM_BOARD) -I$(INC_BRCMSHARED_PUB_PATH)/$(BRCM_BOARD) -I$(INC_BRCMBOARDPARMS_PATH)/$(BRCM_BOARD)
-ccflags-y += -I$(INC_BRCMDRIVER_PRIV_PATH)/$(BRCM_BOARD)
-ccflags-y += -I$(INC_BRCMSHARED_PUB_PATH)/pmc
+ccflags-y += -I. -I./common
+ccflags-y += $(ROOT)/bcmdrivers/opensource/include/bcm963xx
+ccflags-y += $(ROOT)/bcmdrivers/opensource/include/bcm963xx
+ccflags-y += $(ROOT)/shared/opensource/include/bcm963xx
+ccflags-y += $(ROOT)/shared/opensource/include/pmc
 
 #
 # ARM platforms
