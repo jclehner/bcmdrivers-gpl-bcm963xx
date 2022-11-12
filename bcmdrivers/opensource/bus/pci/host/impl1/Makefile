@@ -9,7 +9,7 @@ KDIR ?= /lib/modules/$(shell uname -r)/build
 ###################################################################
 BRCM_BOARD ?= bcm963xx
 ROOT = ../../../../../..
-BRCMDRIVERS_DIR = $(ROOT)/brcmdrivers
+BRCMDRIVERS_DIR = $(ROOT)/bcmdrivers
 BRCMSHARED_DIR = $(ROOT)/shared
 PCIE_HCD_PATH = .
 INC_BRCMDRIVER_PUB_PATH = $(BRCMDRIVERS_DIR)/include
