@@ -7,16 +7,8 @@
 KDIR ?= /lib/modules/$(shell uname -r)/build
 
 ###################################################################
-BRCM_BOARD ?= bcm963xx
-ROOT = ../../../../../..
-BRCMDRIVERS_DIR = $(ROOT)/bcmdrivers
-BRCMSHARED_DIR = $(ROOT)/shared
-PCIE_HCD_PATH = .
-INC_BRCMDRIVER_PUB_PATH = $(BRCMDRIVERS_DIR)/opensource/include
-INC_BRCMSHARED_PUB_PATH = $(BRCMSHARED_DIR)/opensource
-INC_BRCMDRIVER_PRIV_PATH = $(INC_BRCMSHARED_PUB_PATH)/include
-INC_BRCMBOARDPARMS_PATH = $(INC_BRCMDRIVER_PUB_PATH)/boardparams
-PCIE_HCD_PATH=$(BRCMDRIVERS_DIR)/opensource/bus/pci/host/impl1
+BRCM_BOARD = bcm963xx
+ROOT = $(abspath $(M)../../../../../../..)
 ###################################################################
 
 ccflags-y += -DCONFIG_BCM94908=y
@@ -24,7 +16,6 @@ ccflags-y += -I$(M) -I$(M)/common
 ccflags-y += -I$(ROOT)/bcmdrivers/opensource/include/bcm963xx
 ccflags-y += -I$(ROOT)/shared/opensource/include/bcm963xx
 ccflags-y += -I$(ROOT)/shared/opensource/include/pmc
-
 
 #
 # ARM platforms
@@ -55,6 +46,7 @@ endif
 obj-m += common/pcie_common.o
 
 modules:
+	echo $(ROOT)
 	$(MAKE) -C $(KDIR) M=$$PWD modules
 
 modules_install:
