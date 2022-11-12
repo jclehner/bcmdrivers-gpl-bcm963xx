@@ -22,7 +22,7 @@ ccflags-y += -I$(ROOT)/shared/opensource/include/pmc
 #
 ifeq ($(filter y,$(CONFIG_ARM) $(CONFIG_ARM64)),)
 else
-ccflags-y += -I$(PCIE_HCD_PATH)/arm
+ccflags-y += -I$(M)/arm
 obj-m += arm/pcie-bcm963xx.o
 ifeq ("$(CONFIG_ARM64)" ,"y")
 #temporary until fill DT is implemented for arm64 platforms
