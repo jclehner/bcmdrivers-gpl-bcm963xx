@@ -2,23 +2,38 @@
 # Makefile for the bcm963xx PCIe host controller drivers
 #  for ARM and MIPS based platforms with 4.1 kernel onwards
 #
+#
 
+KDIR ?= /lib/modules/$(shell uname -r)/build
+
+###################################################################
+BRCM_BOARD ?= bcm963xx
+ROOT = ../../../../../..
+BRCMDRIVERS_DIR = $(ROOT)/brcmdrivers
+BRCMSHARED_DIR = $(ROOT)/shared
+PCIE_HCD_PATH = .
+INC_BRCMDRIVER_PUB_PATH = $(BRCMDRIVERS_DIR)/include
+INC_BRCMSHARED_PUB_PATH = $(BRCMSHARED_DIR)/opensource
+INC_BRCMDRIVER_PRIV_PATH = $(INC_BRCMSHARED_PUB_PATH)/include
+INC_BRCMBOARDPARMS_PATH = $(INC_BRCMDRIVER_PUB_PATH)/boardparams
 PCIE_HCD_PATH=$(BRCMDRIVERS_DIR)/opensource/bus/pci/host/impl1
-EXTRA_CFLAGS += -I$(PCIE_HCD_PATH)/common
-EXTRA_CFLAGS += -I. -I$(INC_BRCMDRIVER_PUB_PATH)/$(BRCM_BOARD) -I$(INC_BRCMSHARED_PUB_PATH)/$(BRCM_BOARD) -I$(INC_BRCMBOARDPARMS_PATH)/$(BRCM_BOARD)
-EXTRA_CFLAGS += -I$(INC_BRCMDRIVER_PRIV_PATH)/$(BRCM_BOARD)
-EXTRA_CFLAGS += -I$(INC_BRCMSHARED_PUB_PATH)/pmc
+###################################################################
+
+ccflags-y += -I$(PCIE_HCD_PATH)/common
+ccflags-y += -I. -I$(INC_BRCMDRIVER_PUB_PATH)/$(BRCM_BOARD) -I$(INC_BRCMSHARED_PUB_PATH)/$(BRCM_BOARD) -I$(INC_BRCMBOARDPARMS_PATH)/$(BRCM_BOARD)
+ccflags-y += -I$(INC_BRCMDRIVER_PRIV_PATH)/$(BRCM_BOARD)
+ccflags-y += -I$(INC_BRCMSHARED_PUB_PATH)/pmc
 
 #
 # ARM platforms
 #
 ifeq ($(filter y,$(CONFIG_ARM) $(CONFIG_ARM64)),)
 else
-EXTRA_CFLAGS += -I$(PCIE_HCD_PATH)/arm
-MODULE_OBJS += arm/pcie-bcm963xx.o
+ccflags-y += -I$(PCIE_HCD_PATH)/arm
+obj-m += arm/pcie-bcm963xx.o
 ifeq ("$(CONFIG_ARM64)" ,"y")
 #temporary until fill DT is implemented for arm64 platforms
-MODULE_OBJS += ../../../../../../kernel/$(notdir $(KERNEL_DIR))/drivers/pci/setup-irq.o
+#MODULE_OBJS += ../../../../../../kernel/$(notdir $(KERNEL_DIR))/drivers/pci/setup-irq.o
 endif
 endif
 
@@ -29,24 +44,19 @@ endif
 ifeq ("$(CONFIG_MIPS)" ,"y")
 ifdef BCM_KF # defined(CONFIG_BCM_KF_PCI_FIXUP)
 ifdef CONFIG_MIPS_BCM963XX
-EXTRA_CFLAGS += -I$(PCIE_HCD_PATH)/mips
-MODULE_OBJS += mips/pci-bcm963xx.o mips/fixup-bcm963xx.o mips/ops-bcm963xx.o
+ccflags-y += -I$(PCIE_HCD_PATH)/mips
+obj-m += mips/pci-bcm963xx.o mips/fixup-bcm963xx.o mips/ops-bcm963xx.o
 endif
 endif # BCM_KF
 endif
 
-MODULE_OBJS += common/pcie_common.o
+obj-m += common/pcie_common.o
 
+modules:
+	$(MAKE) -C $(KDIR) M=$$PWD modules
 
-ifeq ("$(CONFIG_BCM_PCIE_HCD)" ,"y")
-obj-$(CONFIG_BCM_PCIE_HCD) +=  $(MODULE_OBJS)
-else
-MODULE_NAME=bcm_pcie_hcd
-$(MODULE_NAME)-objs += $(MODULE_OBJS)
-obj-$(CONFIG_BCM_PCIE_HCD) += $(MODULE_NAME).o
-endif
-
--include $(TOPDIR)/Rules.make
+modules_install:
+	$(MAKE) -C $(KDIR) M=$$PWD modules_install
 
 clean:
 	rm -f core *.o *.a *.s .*.o .*.cmd *.ko $(MODULE_NAME)* modules.*
