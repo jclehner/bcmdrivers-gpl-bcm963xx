@@ -20,10 +20,9 @@ PCIE_HCD_PATH=$(BRCMDRIVERS_DIR)/opensource/bus/pci/host/impl1
 ###################################################################
 
 ccflags-y += -I. -I./common
-ccflags-y += $(ROOT)/bcmdrivers/opensource/include/bcm963xx
-ccflags-y += $(ROOT)/bcmdrivers/opensource/include/bcm963xx
-ccflags-y += $(ROOT)/shared/opensource/include/bcm963xx
-ccflags-y += $(ROOT)/shared/opensource/include/pmc
+ccflags-y += -I$(ROOT)/bcmdrivers/opensource/include/bcm963xx
+ccflags-y += -I$(ROOT)/shared/opensource/include/bcm963xx
+ccflags-y += -I$(ROOT)/shared/opensource/include/pmc
 
 #
 # ARM platforms
